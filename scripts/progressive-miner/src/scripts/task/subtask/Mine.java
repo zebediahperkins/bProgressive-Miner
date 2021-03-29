@@ -2,6 +2,7 @@ package scripts.task.subtask;
 
 import org.tribot.api.DynamicClicking;
 import org.tribot.api.General;
+import org.tribot.api.Timing;
 import org.tribot.api.input.Mouse;
 import org.tribot.api2007.ChooseOption;
 import org.tribot.api2007.Objects;
@@ -72,10 +73,10 @@ public class Mine implements Task {
         switch (AntiBan.getInstance().getAndResetHover()) {
             case HOVER -> Mouse.click(1);
             case OPEN_MENU -> ChooseOption.select("Mine");
-            case NONE -> Clicking.clickObjectAndWait(target, true);
+            case NONE -> Clicking.clickObjectUntilSuccessful(target);
         }
         long startTime = System.currentTimeMillis();
-        while (getRockAtTile(target.getPosition()) != null && Player.getAnimation() != -1) {
+        while (getRockAtTile(target.getPosition()) != null) {
             AntiBan.getInstance().performTimedActions();
             if (nextTarget != null) {
                 switch (AntiBan.getInstance().shouldHoverNextTarget()) {
@@ -83,6 +84,18 @@ public class Mine implements Task {
                     case OPEN_MENU -> DynamicClicking.clickRSObject(target, 2);
                 }
             }
+            if (Player.isMoving())
+                continue;
+            if (!Timing.waitCondition(
+                    () -> {
+                        if (getRockAtTile(target.getPosition()) == null) {
+                            updateTimersAndSleep(startTime, true);
+                            return false;
+                        }
+                        return Player.getAnimation() != -1;
+                    }, General.random(1000, 2000) //TODO: Maybe find a better solution than a random?
+            ))
+                return true;
             General.sleep(50); //TODO: Again, static sleep
         }
         updateTimersAndSleep(startTime, true);
@@ -118,13 +131,13 @@ public class Mine implements Task {
             tempTotalTime += elapsedTime;
             tempTotalTime /= ++totalMines;
             averageMineTimeMS = (int) tempTotalTime;
-            AntiBan.getInstance().generateReactionTimeAndSleep(averageMineTimeMS);
+            AntiBan.getInstance().generateReactionTimeAndSleep(averageMineTimeMS, elapsedTime);
         } else {
             tempTotalTime = (long) averageWaitTimeMS * totalWaits;
             tempTotalTime += elapsedTime;
             tempTotalTime /= ++totalWaits;
             averageWaitTimeMS = (int) tempTotalTime;
-            AntiBan.getInstance().generateReactionTimeAndSleep(averageWaitTimeMS);
+            AntiBan.getInstance().generateReactionTimeAndSleep(averageWaitTimeMS, elapsedTime);
         }
     }
 }

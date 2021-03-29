@@ -114,7 +114,7 @@ public class AntiBan {
      *
      * @param averageWaitMS An approximate amount of time in milliseconds that this task should take to complete
      */
-    public void generateReactionTimeAndSleep(int averageWaitMS) {
+    public void generateReactionTimeAndSleep(int averageWaitMS, int actualWaitMS) {
         ABCProperties props = abcUtil.getProperties();
         props.setWaitingTime(averageWaitMS);
         props.setHovering(isHovering);
@@ -122,7 +122,7 @@ public class AntiBan {
         props.setUnderAttack(Combat.isUnderAttack());
         props.setWaitingFixed(false);
         abcUtil.generateTrackers();
-        long reactionTime = abcUtil.generateReactionTime() / 8;
+        long reactionTime = abcUtil.generateReactionTime(actualWaitMS) / 8;
         General.println("Sleeping for " + reactionTime + "ms.");
         try {
             abcUtil.sleep(reactionTime);
