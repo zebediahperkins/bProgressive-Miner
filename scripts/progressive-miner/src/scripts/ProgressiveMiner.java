@@ -10,7 +10,7 @@ import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.EventBlockingOverride;
 import org.tribot.script.interfaces.Painting;
 import scripts.data.UIData;
-import scripts.gui.MinerGUI;
+import scripts.gui.GUI;
 import scripts.gui.main_ui.GUIFXML;
 import scripts.gui.rock_ui.RockUIController;
 import scripts.helpers.ProjectionHelper;
@@ -30,7 +30,7 @@ import java.awt.event.MouseEvent;
 )
 
 public class ProgressiveMiner extends Script implements TaskHandler, Painting, EventBlockingOverride {
-    private final MinerGUI mainUI = new MinerGUI(GUIFXML.get, "bProgressive-Miner");
+    private final GUI mainUI = new GUI(GUIFXML.get, "bProgressive-Miner");
 
     @Override
     public void run() {

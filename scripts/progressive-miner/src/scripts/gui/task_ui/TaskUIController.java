@@ -1,7 +1,6 @@
 package scripts.gui.task_ui;
 
 import com.allatori.annotations.DoNotRename;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,7 +9,6 @@ import scripts.data.FullInventoryAction;
 import scripts.data.Pickaxe;
 import scripts.gui.Controller;
 import scripts.gui.GUI;
-import scripts.gui.MinerGUI;
 import scripts.gui.main_ui.GUIController;
 import scripts.gui.rock_ui.RockUIFXML;
 import scripts.task.ProgressiveTask;
@@ -20,8 +18,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class TaskUIController implements Initializable, Controller {
-    private MinerGUI gui;
-    private MinerGUI parentGui;
+    private GUI gui;
+    private GUI parentGui;
     private GUIController mainUIController;
 
     @DoNotRename
@@ -63,10 +61,10 @@ public class TaskUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void addRockButtonPressed(ActionEvent actionEvent) {
+    public void addRockButtonPressed() {
         changeButtonStatus(true);
         new Thread(() -> {
-            MinerGUI child = new MinerGUI(RockUIFXML.get, "Tile Selector", gui);
+            GUI child = new GUI(RockUIFXML.get, "Tile Selector", gui);
             gui.setChildGui(child);
             child.show();
         }).start();
@@ -74,7 +72,7 @@ public class TaskUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void removeRockButtonPressed(ActionEvent actionEvent) {
+    public void removeRockButtonPressed() {
         RSTile tile = rockListView.getSelectionModel().getSelectedItem();
         if (tile != null)
             rockListView.getItems().remove(tile);
@@ -82,7 +80,7 @@ public class TaskUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void addButtonPressed(ActionEvent actionEvent) {
+    public void addButtonPressed() {
         if (highLevelSpinner.getValue() <= lowLevelSpinner.getValue())
             highLevelSpinner.getValueFactory().setValue(lowLevelSpinner.getValue() + 1);
         mainUIController.addTaskToListView(new ProgressiveTask(
@@ -144,7 +142,7 @@ public class TaskUIController implements Initializable, Controller {
 
     @Override
     public void setGui(GUI gui) {
-        this.gui = (MinerGUI) gui;
+        this.gui = gui;
     }
 
     @Override
@@ -154,7 +152,7 @@ public class TaskUIController implements Initializable, Controller {
 
     @Override
     public void setParentGui(GUI parentGui) {
-        this.parentGui = (MinerGUI) parentGui;
+        this.parentGui = parentGui;
         mainUIController = (GUIController) parentGui.getController();
     }
 

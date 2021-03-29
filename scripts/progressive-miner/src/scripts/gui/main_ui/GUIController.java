@@ -2,7 +2,6 @@ package scripts.gui.main_ui;
 
 import com.allatori.annotations.DoNotRename;
 import com.google.gson.Gson;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -12,7 +11,6 @@ import org.tribot.util.Util;
 import scripts.data.UIData;
 import scripts.gui.Controller;
 import scripts.gui.GUI;
-import scripts.gui.MinerGUI;
 import scripts.gui.save_ui.SaveUIFXML;
 import scripts.gui.task_ui.TaskUIFXML;
 import scripts.task.ProgressiveTask;
@@ -26,7 +24,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class GUIController implements Initializable, Controller {
-    private MinerGUI gui;
+    private GUI gui;
     public final String PATH_TO_BBUU20_FOLDER = Util.getWorkingDirectory().getAbsolutePath() + "/bbuu20/miner";
 
     /* Mining Tab */
@@ -49,10 +47,10 @@ public class GUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void addTaskButtonPressed(ActionEvent actionEvent) {
+    public void addTaskButtonPressed() {
         changeButtonStatus(true);
         new Thread(() -> {
-            MinerGUI child = new MinerGUI(TaskUIFXML.get, "Task Builder", gui);
+            GUI child = new GUI(TaskUIFXML.get, "Task Builder", gui);
             gui.setChildGui(child);
             child.show();
         }).start();
@@ -60,7 +58,7 @@ public class GUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void removeTaskButtonPressed(ActionEvent actionEvent) {
+    public void removeTaskButtonPressed() {
         ProgressiveTask task = taskListView.getSelectionModel().getSelectedItem();
         if (task != null)
             taskListView.getItems().remove(task);
@@ -74,7 +72,7 @@ public class GUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void loadProfileButtonPressed(ActionEvent actionEvent) {
+    public void loadProfileButtonPressed() {
         File profile = profileListView.getSelectionModel().getSelectedItem();
         if (profile != null) {
             try {
@@ -93,7 +91,7 @@ public class GUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void deleteProfileButtonPressed(ActionEvent actionEvent) {
+    public void deleteProfileButtonPressed() {
         File profile = profileListView.getSelectionModel().getSelectedItem();
         if (profile != null) {
             profile.delete();
@@ -105,10 +103,10 @@ public class GUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void saveProfileButtonPressed(ActionEvent actionEvent) {
+    public void saveProfileButtonPressed() {
         changeButtonStatus(true);
         new Thread(() -> {
-            MinerGUI child = new MinerGUI(SaveUIFXML.get, "Save as", gui);
+            GUI child = new GUI(SaveUIFXML.get, "Save as", gui);
             gui.setChildGui(child);
             child.show();
         }).start();
@@ -116,7 +114,7 @@ public class GUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void startButtonPressed(ActionEvent actionEvent) {
+    public void startButtonPressed() {
         if (taskListView.getItems().size() > 0) {
             UIData.shouldPaint = drawPaintBox.isSelected();
             UIData.progressiveTasks = taskListView.getItems().toArray(ProgressiveTask[]::new);
@@ -146,7 +144,7 @@ public class GUIController implements Initializable, Controller {
 
     @Override
     public void setGui(GUI gui) {
-        this.gui = (MinerGUI) gui;
+        this.gui = gui;
     }
 
     @Override

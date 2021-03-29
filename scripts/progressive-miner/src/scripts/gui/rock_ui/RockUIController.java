@@ -1,23 +1,22 @@
 package scripts.gui.rock_ui;
 
 import com.allatori.annotations.DoNotRename;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import org.tribot.api.General;
 import org.tribot.api2007.types.RSTile;
 import scripts.data.UIData;
 import scripts.gui.Controller;
 import scripts.gui.GUI;
-import scripts.gui.MinerGUI;
 import scripts.gui.task_ui.TaskUIController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RockUIController implements Initializable, Controller {
-    private MinerGUI gui;
-    private MinerGUI parentGui;
+    private GUI gui;
+    private GUI parentGui;
     private TaskUIController parentController;
 
     @DoNotRename
@@ -32,7 +31,7 @@ public class RockUIController implements Initializable, Controller {
 
     @DoNotRename
     @FXML
-    public void addButtonClicked(ActionEvent actionEvent) {
+    public void addButtonClicked() {
         if (tileXTextField.getText().length() > 0
                 && tileYTextField.getText().length() > 0
                 && tileZTextField.getText().length() > 0) {
@@ -46,7 +45,7 @@ public class RockUIController implements Initializable, Controller {
             parentGui.setChildGui(null);
             gui.close();
         } else {
-            //TODO: Alert the user that one or more fields are empty
+            General.println("Error: Make sure all fields contain a number");
         }
     }
 
@@ -69,7 +68,7 @@ public class RockUIController implements Initializable, Controller {
 
     @Override
     public void setGui(GUI gui) {
-        this.gui = (MinerGUI) gui;
+        this.gui = gui;
     }
 
     @Override
@@ -79,7 +78,7 @@ public class RockUIController implements Initializable, Controller {
 
     @Override
     public void setParentGui(GUI parentGui) {
-        this.parentGui = (MinerGUI) parentGui;
+        this.parentGui = parentGui;
         parentController = (TaskUIController) parentGui.getController();
     }
 
