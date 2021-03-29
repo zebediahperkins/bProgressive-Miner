@@ -1,6 +1,5 @@
 package scripts.antiban;
 
-import org.tribot.api.General;
 import org.tribot.api.input.Mouse;
 import org.tribot.api.interfaces.Positionable;
 import org.tribot.api.util.abc.ABCProperties;
@@ -123,7 +122,6 @@ public class AntiBan {
         props.setWaitingFixed(false);
         abcUtil.generateTrackers();
         long reactionTime = abcUtil.generateReactionTime(actualWaitMS) / 8;
-        General.println("Sleeping for " + reactionTime + "ms.");
         try {
             abcUtil.sleep(reactionTime);
         } catch (InterruptedException e) {
