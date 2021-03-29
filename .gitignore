@@ -11,10 +11,9 @@ gradlew.bat
 local.properties
 settings.gradle.kts
 libraries/dax_api
+libraries/bApi/build
+libraries/bApi/build.gradle.kts
 libraries/build
-scripts/macro-recorder
-scripts/multi-boxer
-scripts/testing
 scripts/build
 scripts/build.gradle.kts
 scripts/progressive-miner/build

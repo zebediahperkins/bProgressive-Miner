@@ -1,15 +1,13 @@
 package scripts.task;
 
-import org.apache.commons.lang3.Range;
 import org.tribot.api2007.types.RSTile;
 import scripts.data.FullInventoryAction;
 import scripts.data.Pickaxe;
 
-import java.util.List;
-
 public class ProgressiveTask {
-    private final List<RSTile> rockLocations;
-    private final Range<Integer> levelRange;
+    private final RSTile[] rockLocations;
+    private final int lowLevel;
+    private final int highLevel;
     private final FullInventoryAction fullInventoryAction;
     private final Pickaxe pickaxe;
     private final boolean shouldHopOnNoRocks;
@@ -18,8 +16,9 @@ public class ProgressiveTask {
     private final boolean useAntiPK;
 
     public ProgressiveTask(
-            List<RSTile> rockLocations,
-            Range<Integer> levelRange,
+            RSTile[] rockLocations,
+            int lowLevel,
+            int highLevel,
             FullInventoryAction fullInventoryAction,
             Pickaxe pickaxe,
             boolean shouldHopOnNoRocks,
@@ -28,7 +27,8 @@ public class ProgressiveTask {
             boolean useAntiPK
     ) {
         this.rockLocations = rockLocations;
-        this.levelRange = levelRange;
+        this.lowLevel = lowLevel;
+        this.highLevel = highLevel;
         this.fullInventoryAction = fullInventoryAction;
         this.pickaxe = pickaxe;
         this.shouldHopOnNoRocks = shouldHopOnNoRocks;
@@ -37,16 +37,20 @@ public class ProgressiveTask {
         this.useAntiPK = useAntiPK;
     }
 
-    public List<RSTile> getRockLocations() {
+    public RSTile[] getRockLocations() {
         return rockLocations;
     }
 
-    public boolean isInLevelRange(int level) {
-        return level != levelRange.getMaximum() && levelRange.contains(level);
+    public int getLowLevel() {
+        return lowLevel;
     }
 
-    public Range<Integer> getLevelRange() {
-        return levelRange;
+    public int getHighLevel() {
+        return highLevel;
+    }
+
+    public boolean isInLevelRange(int level) {
+        return level >= lowLevel && level < highLevel;
     }
 
     public FullInventoryAction getFullInventoryAction() {
@@ -71,7 +75,7 @@ public class ProgressiveTask {
 
     public boolean getUseAntiPK() {
         return useAntiPK;
-    }
+    } //TODO: Implement anti-pk
 
     public String getTilesAsString() {
         String tiles = "{ ";
@@ -85,7 +89,7 @@ public class ProgressiveTask {
     public String toString() {
         return "pick="
                 + pickaxe + " : range="
-                + levelRange.getMinimum() + "-" + levelRange.getMaximum() + " : fullinv="
+                + lowLevel + "-" + highLevel + " : fullinv="
                 + fullInventoryAction + " : hop="
                 + shouldHopOnNoRocks + " : pvpwrld="
                 + usePvpWorlds + " : memwrld="

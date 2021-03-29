@@ -3,13 +3,13 @@ package scripts;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Projection;
 import org.tribot.api2007.types.RSArea;
+import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.EventBlockingOverride;
 import org.tribot.script.interfaces.Painting;
-import scripts.dax_api.api_lib.DaxWalker;
-import scripts.dax_api.api_lib.models.DaxCredentials;
+import scripts.data.UIData;
 import scripts.gui.MinerGUI;
 import scripts.gui.main_ui.GUIFXML;
 import scripts.gui.rock_ui.RockUIController;
@@ -34,9 +34,6 @@ public class ProgressiveMiner extends Script implements TaskHandler, Painting, E
 
     @Override
     public void run() {
-        DaxWalker.setCredentials(() ->
-                new DaxCredentials("sub_DPjXXzL5DeSiPf", "PUBLIC-KEY")
-        );
         Task[] taskList = initTasks(
                 new StartNewTask(),
                 new Bank(),
@@ -45,16 +42,41 @@ public class ProgressiveMiner extends Script implements TaskHandler, Painting, E
                 new Mine()
         );
         if (mainUI.show()) {
-            while (true) {
-                if (!handleTasks(taskList))
-                    break;
-            }
+            while (handleTasks(taskList));
         }
     }
 
     @Override
+    public OVERRIDE_RETURN overrideKeyEvent(KeyEvent keyEvent) {
+        return OVERRIDE_RETURN.DISMISS;
+    }
+
+    @Override
+    public OVERRIDE_RETURN overrideMouseEvent(MouseEvent mouseEvent) {
+        if (!mainUI.isOpen())
+            return OVERRIDE_RETURN.DISMISS;
+        else if (mouseEvent.getButton() == 1 && mouseEvent.paramString().contains("PRESSED")) {
+            RSTile clickedTile = ProjectionHelper.screenToTile(mouseEvent.getPoint());
+            if (mainUI.getChildGui() != null
+                    && mainUI.getChildGui().getChildGui() != null
+                    && clickedTile != null) {
+                RockUIController rockUIController = (RockUIController) mainUI.getChildGui().getChildGui().getController();
+                rockUIController.tileXTextField.setText(String.valueOf(clickedTile.getX()));
+                rockUIController.tileYTextField.setText(String.valueOf(clickedTile.getY()));
+                rockUIController.tileZTextField.setText("0");
+            }
+            return OVERRIDE_RETURN.DISMISS;
+        }
+        return OVERRIDE_RETURN.SEND;
+    }
+
+    public static RSObject[] availableRocks;
+    public static RSObject target;
+    public static RSObject nextTarget;
+
+    @Override
     public void onPaint(Graphics graphics) {
-        if (MinerGUI.shouldPaint && mainUI.isOpen()) {
+        if (UIData.shouldPaint && mainUI.isOpen()) {
             graphics.setColor(Color.GREEN);
             RSArea nearbyArea = new RSArea(
                     new RSTile(Player.getPosition().getX() - 9, Player.getPosition().getY() - 9, 0),
@@ -76,32 +98,20 @@ public class ProgressiveMiner extends Script implements TaskHandler, Painting, E
                     graphics.fillPolygon(Projection.getTileBoundsPoly(new RSTile(tileX, tileY, tileZ), 0));
                 }
             }
-        } else if (MinerGUI.shouldPaint) {
-            ; //TODO: Add Paint
-        }
-    }
-
-    @Override
-    public OVERRIDE_RETURN overrideKeyEvent(KeyEvent keyEvent) {
-        return OVERRIDE_RETURN.DISMISS;
-    }
-
-    @Override
-    public OVERRIDE_RETURN overrideMouseEvent(MouseEvent mouseEvent) {
-        if (!mainUI.isOpen())
-            return OVERRIDE_RETURN.SEND; //TODO: Change to delete
-        else if (mouseEvent.getButton() == 1 && mouseEvent.paramString().contains("PRESSED")) {
-            RSTile clickedTile = ProjectionHelper.screenToTile(mouseEvent.getPoint());
-            if (mainUI.getChildGui() != null
-                    && mainUI.getChildGui().getChildGui() != null
-                    && clickedTile != null) {
-                RockUIController rockUIController = (RockUIController) mainUI.getChildGui().getChildGui().getController();
-                rockUIController.tileXTextField.setText(String.valueOf(clickedTile.getX()));
-                rockUIController.tileYTextField.setText(String.valueOf(clickedTile.getY()));
-                rockUIController.tileZTextField.setText("0");
+        } else if (UIData.shouldPaint) {
+            if (availableRocks != null) {
+                for (RSObject rock : availableRocks) {
+                    if (rock.equals(target))
+                        graphics.setColor(Color.GREEN);
+                    else if (rock.equals(nextTarget))
+                        graphics.setColor(Color.YELLOW);
+                    else
+                        graphics.setColor(Color.BLUE);
+                    Polygon[] tris = rock.getModel().getTriangles();
+                    for (Polygon tri : tris)
+                        graphics.drawPolygon(tri);
+                }
             }
-            return OVERRIDE_RETURN.DISMISS;
         }
-        return OVERRIDE_RETURN.SEND;
     }
 }

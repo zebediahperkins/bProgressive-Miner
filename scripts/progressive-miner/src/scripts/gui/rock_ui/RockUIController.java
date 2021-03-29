@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import org.tribot.api2007.types.RSTile;
+import scripts.data.UIData;
 import scripts.gui.Controller;
 import scripts.gui.GUI;
 import scripts.gui.MinerGUI;
@@ -40,9 +41,9 @@ public class RockUIController implements Initializable, Controller {
                     Integer.parseInt(tileYTextField.getText()),
                     Integer.parseInt(tileZTextField.getText())
             ));
-            MinerGUI.shouldPaint = false;
-            ((TaskUIController) gui.getParentGui().getController()).changeButtonStatus(false);
-            gui.getParentGui().setChildGui(null);
+            UIData.shouldPaint = false;
+            parentController.changeButtonStatus(false);
+            parentGui.setChildGui(null);
             gui.close();
         } else {
             //TODO: Alert the user that one or more fields are empty
@@ -51,7 +52,7 @@ public class RockUIController implements Initializable, Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        MinerGUI.shouldPaint = true;
+        UIData.shouldPaint = true;
     }
 
     @Override
@@ -60,9 +61,9 @@ public class RockUIController implements Initializable, Controller {
 
     @Override
     public void onClose() {
-        ((TaskUIController) gui.getParentGui().getController()).changeButtonStatus(false);
-        MinerGUI.shouldPaint = false;
-        gui.getParentGui().setChildGui(null);
+        parentController.changeButtonStatus(false);
+        UIData.shouldPaint = false;
+        parentGui.setChildGui(null);
         gui.close();
     }
 

@@ -5,9 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import org.apache.commons.lang3.Range;
 import org.tribot.api2007.types.RSTile;
-import scripts.task.ProgressiveTask;
 import scripts.data.FullInventoryAction;
 import scripts.data.Pickaxe;
 import scripts.gui.Controller;
@@ -15,6 +13,7 @@ import scripts.gui.GUI;
 import scripts.gui.MinerGUI;
 import scripts.gui.main_ui.GUIController;
 import scripts.gui.rock_ui.RockUIFXML;
+import scripts.task.ProgressiveTask;
 
 import java.net.URL;
 import java.util.List;
@@ -87,8 +86,9 @@ public class TaskUIController implements Initializable, Controller {
         if (highLevelSpinner.getValue() <= lowLevelSpinner.getValue())
             highLevelSpinner.getValueFactory().setValue(lowLevelSpinner.getValue() + 1);
         mainUIController.addTaskToListView(new ProgressiveTask(
-                rockListView.getItems(),
-                Range.between(lowLevelSpinner.getValue(), highLevelSpinner.getValue()),
+                rockListView.getItems().toArray(RSTile[]::new),
+                lowLevelSpinner.getValue(),
+                highLevelSpinner.getValue(),
                 fullInvBox.getValue(),
                 prefPickBox.getValue(),
                 hopWorldsCheck.isSelected(),
@@ -96,8 +96,8 @@ public class TaskUIController implements Initializable, Controller {
                 membersCheck.isSelected(),
                 antiPkCheck.isSelected()
         ));
-        ((GUIController) gui.getParentGui().getController()).changeButtonStatus(false);
-        gui.getParentGui().setChildGui(null);
+        mainUIController.changeButtonStatus(false);
+        parentGui.setChildGui(null);
         gui.close();
     }
 
@@ -115,7 +115,7 @@ public class TaskUIController implements Initializable, Controller {
     public void delayed() {
         List<ProgressiveTask> taskList = mainUIController.taskListView.getItems();
         if (taskList.size() > 0) {
-            int lowVal = taskList.get(taskList.size() - 1).getLevelRange().getMaximum();
+            int lowVal = taskList.get(taskList.size() - 1).getHighLevel();
             lowLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, lowVal));
             lowLevelSpinner.setDisable(true);
             highLevelSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(lowVal + 1, 99, lowVal + 1));
@@ -137,8 +137,8 @@ public class TaskUIController implements Initializable, Controller {
 
     @Override
     public void onClose() {
-        ((GUIController) gui.getParentGui().getController()).changeButtonStatus(false);
-        gui.getParentGui().setChildGui(null);
+        mainUIController.changeButtonStatus(false);
+        parentGui.setChildGui(null);
         gui.close();
     }
 

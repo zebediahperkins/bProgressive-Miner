@@ -14,8 +14,6 @@ import javax.swing.*;
 import java.io.ByteArrayInputStream;
 
 public class MinerGUI extends Application implements GUI {
-    public static boolean shouldPaint = false;
-
     private Controller controller;
     private Stage stage;
     private Scene scene;

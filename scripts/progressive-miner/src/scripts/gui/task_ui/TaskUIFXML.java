@@ -20,12 +20,12 @@ public class TaskUIFXML {
                             <HBox alignment="CENTER" maxHeight="30.0" maxWidth="250.0" minHeight="30.0" minWidth="250.0"
                                   prefHeight="30.0" prefWidth="250.0" spacing="10.0">
                                 <children>
-                                    <Button fx:id="addRockButton" maxHeight="25.0" maxWidth="95.0" minHeight="25.0" minWidth="95.0"
-                                            mnemonicParsing="false" onAction="#addRockButtonPressed" prefHeight="25.0"
+                                    <Button fx:id="addRockButton" maxHeight="30.0" maxWidth="95.0" minHeight="30.0" minWidth="95.0"
+                                            mnemonicParsing="false" onAction="#addRockButtonPressed" prefHeight="30.0"
                                             prefWidth="95.0" text="Add Rock"/>
-                                    <Button fx:id="removeRockButton" maxHeight="25.0" maxWidth="95.0" minHeight="25.0"
+                                    <Button fx:id="removeRockButton" maxHeight="30.0" maxWidth="95.0" minHeight="30.0"
                                             minWidth="95.0" mnemonicParsing="false" onAction="#removeRockButtonPressed"
-                                            prefHeight="25.0" prefWidth="95.0" text="Remove Rock"/>
+                                            prefHeight="30.0" prefWidth="95.0" text="Remove"/>
                                 </children>
                             </HBox>
                             <HBox alignment="CENTER" maxHeight="50.0" maxWidth="250.0" minHeight="50.0" minWidth="250.0"
@@ -94,9 +94,9 @@ public class TaskUIFXML {
                     <HBox alignment="CENTER" layoutY="350.0" maxHeight="50.0" maxWidth="250.0" minHeight="50.0" minWidth="250.0"
                           prefHeight="50.0" prefWidth="250.0">
                         <children>
-                            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="25.0" maxWidth="100.0"
-                                    minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#addButtonPressed"
-                                    prefHeight="25.0" prefWidth="100.0" text="Add"/>
+                            <Button fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="100.0"
+                                    minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#addButtonPressed"
+                                    prefHeight="30.0" prefWidth="100.0" text="Add"/>
                         </children>
                     </HBox>
                 </children>

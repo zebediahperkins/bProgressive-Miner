@@ -27,8 +27,8 @@ public class RockUIFXML {
                                        prefHeight="30.0" prefWidth="150.0" promptText="RSTile &quot;Y&quot; Value"/>
                             <TextField fx:id="tileZTextField" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0"
                                        prefHeight="30.0" prefWidth="150.0" promptText="RSTile &quot;Z&quot; Value"/>
-                            <Button maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" mnemonicParsing="false"
-                                    onAction="#addButtonClicked" prefHeight="25.0" prefWidth="50.0" text="Add"/>
+                            <Button maxHeight="30.0" maxWidth="50.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false"
+                                    onAction="#addButtonClicked" prefHeight="30.0" prefWidth="50.0" text="Add"/>
                         </children>
                     </VBox>
                 </children>

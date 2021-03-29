@@ -1,28 +1,36 @@
 package scripts.gui.main_ui;
 
 import com.allatori.annotations.DoNotRename;
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import org.tribot.util.Util;
 import scripts.data.UIData;
 import scripts.gui.Controller;
 import scripts.gui.GUI;
 import scripts.gui.MinerGUI;
+import scripts.gui.save_ui.SaveUIFXML;
 import scripts.gui.task_ui.TaskUIFXML;
 import scripts.task.ProgressiveTask;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class GUIController implements Initializable, Controller {
     private MinerGUI gui;
+    public final String PATH_TO_BBUU20_FOLDER = Util.getWorkingDirectory().getAbsolutePath() + "/bbuu20/miner";
 
-    /**
-     * Mining Tab
-     **/
+    /* Mining Tab */
+
     @DoNotRename
     @FXML
     public ListView<ProgressiveTask> taskListView;
@@ -58,13 +66,59 @@ public class GUIController implements Initializable, Controller {
             taskListView.getItems().remove(task);
     }
 
-    /**
-     * Toolbar/Footer
-     **/
+    /* Profile Tab */
+
+    @DoNotRename
+    @FXML
+    public ListView<File> profileListView;
+
+    @DoNotRename
+    @FXML
+    public void loadProfileButtonPressed(ActionEvent actionEvent) {
+        File profile = profileListView.getSelectionModel().getSelectedItem();
+        if (profile != null) {
+            try {
+                ProgressiveTask[] tasks = new Gson()
+                        .fromJson(
+                                new FileReader(profile),
+                                ProgressiveTask[].class
+                        );
+                taskListView.getItems().clear();
+                taskListView.getItems().addAll(tasks);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @DoNotRename
+    @FXML
+    public void deleteProfileButtonPressed(ActionEvent actionEvent) {
+        File profile = profileListView.getSelectionModel().getSelectedItem();
+        if (profile != null) {
+            profile.delete();
+            profileListView.getItems().remove(profile);
+        }
+    }
+
+    /* Toolbar/Footer */
+
+    @DoNotRename
+    @FXML
+    public void saveProfileButtonPressed(ActionEvent actionEvent) {
+        changeButtonStatus(true);
+        new Thread(() -> {
+            MinerGUI child = new MinerGUI(SaveUIFXML.get, "Save as", gui);
+            gui.setChildGui(child);
+            child.show();
+        }).start();
+    }
+
     @DoNotRename
     @FXML
     public void startButtonPressed(ActionEvent actionEvent) {
         if (taskListView.getItems().size() > 0) {
+            UIData.shouldPaint = drawPaintBox.isSelected();
             UIData.progressiveTasks = taskListView.getItems().toArray(ProgressiveTask[]::new);
             gui.close();
         }
@@ -72,7 +126,13 @@ public class GUIController implements Initializable, Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        File pathToProfiles = new File(PATH_TO_BBUU20_FOLDER);
+        pathToProfiles.mkdirs();
+        profileListView.getItems().addAll(Arrays
+                .stream(Objects.requireNonNull(pathToProfiles.listFiles()))
+                .filter(file -> file.getName().contains(".json"))
+                .toArray(File[]::new)
+        );
     }
 
     @Override
