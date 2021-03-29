@@ -1,6 +1,7 @@
 .gradle
 .idea
 .run
+.DS_Store
 build
 gradle
 allatori-annotations-7.5.jar
