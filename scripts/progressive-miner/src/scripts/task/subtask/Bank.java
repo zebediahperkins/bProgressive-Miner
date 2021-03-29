@@ -15,11 +15,11 @@ public class Bank implements Task {
 
     @Override
     public boolean carryOutTask() {
-        if (!Walking.getInstance().isInBank()) //TODO: If not in bank, walk to bank
+        if (!Walking.getInstance().isInBank())
             Walking.getInstance().walkToBank();
-        else if (!Banking.isBankScreenOpen()) //TODO: If in bank but not in interface, talk to banker
+        else if (!Banking.isBankScreenOpen())
             Banking.openBank();
-        else { //TODO: If in interface, deposit everything but the pickaxe
+        else {
             Banking.depositAllExcept(UIData.lastRecordedTask.getPickaxe().id);
             Banking.close();
         }

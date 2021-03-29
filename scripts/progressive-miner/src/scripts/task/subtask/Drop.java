@@ -13,7 +13,7 @@ public class Drop implements Task {
 
     @Override
     public boolean carryOutTask() {
-        Inventory.dropAllExcept(UIData.lastRecordedTask.getPickaxe().id); //TODO: Drop all except the pickaxe
+        Inventory.dropAllExcept(UIData.lastRecordedTask.getPickaxe().id);
         return true;
     }
 }

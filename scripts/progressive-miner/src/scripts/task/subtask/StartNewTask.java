@@ -20,7 +20,7 @@ public class StartNewTask implements Task {
         ProgressiveTask currentTask = UIData.getCurrentProgressiveTask();
         if (currentTask == null)
             return false;
-        if (Inventory.getCount(currentTask.getPickaxe().id) == 0 && !Equipment.isEquipped(currentTask.getPickaxe().id)) { //TODO: Check if we need a new pickaxe
+        if (Inventory.getCount(currentTask.getPickaxe().id) == 0 && !Equipment.isEquipped(currentTask.getPickaxe().id)) {
             if (!Walking.getInstance().isInBank())
                 Walking.getInstance().walkToBank();
             else if (!Banking.isBankScreenOpen())
