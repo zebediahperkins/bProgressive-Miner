@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+@DoNotRename
 public class GUIController implements Initializable, Controller {
     private GUI gui;
     public final String PATH_TO_BBUU20_FOLDER = Util.getWorkingDirectory().getAbsolutePath() + "/bbuu20/miner";

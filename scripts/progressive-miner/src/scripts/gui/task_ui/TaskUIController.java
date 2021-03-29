@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@DoNotRename
 public class TaskUIController implements Initializable, Controller {
     private GUI gui;
     private GUI parentGui;

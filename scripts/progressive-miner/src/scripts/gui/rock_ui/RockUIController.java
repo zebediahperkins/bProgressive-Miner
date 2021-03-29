@@ -14,6 +14,7 @@ import scripts.gui.task_ui.TaskUIController;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@DoNotRename
 public class RockUIController implements Initializable, Controller {
     private GUI gui;
     private GUI parentGui;

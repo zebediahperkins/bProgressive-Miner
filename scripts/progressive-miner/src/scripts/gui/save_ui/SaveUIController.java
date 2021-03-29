@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@DoNotRename
 public class SaveUIController implements Initializable, Controller {
     private GUI gui;
     private GUI parentGui;
