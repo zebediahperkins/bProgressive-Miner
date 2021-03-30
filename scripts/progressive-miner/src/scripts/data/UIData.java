@@ -9,7 +9,7 @@ public class UIData {
     public static ProgressiveTask lastRecordedTask;
 
     public static ProgressiveTask getCurrentProgressiveTask() {
-        for (ProgressiveTask progressiveTask : UIData.progressiveTasks) {
+        for (ProgressiveTask progressiveTask : progressiveTasks) {
             if (progressiveTask.isInLevelRange(Skills.getActualLevel(Skills.SKILLS.MINING)))
                 return progressiveTask;
         }
