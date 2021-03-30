@@ -112,6 +112,7 @@ public class AntiBan {
      * Generate a reaction time, and feed it to ABCUtil#sleep. Also updates trackers
      *
      * @param averageWaitMS An approximate amount of time in milliseconds that this task should take to complete
+     * @param actualWaitMS The actual amount of time in milliseconds that this task took to complete
      */
     public void generateReactionTimeAndSleep(int averageWaitMS, int actualWaitMS) {
         ABCProperties props = abcUtil.getProperties();
