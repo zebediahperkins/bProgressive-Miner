@@ -11,7 +11,7 @@ gradlew
 gradlew.bat
 local.properties
 settings.gradle.kts
-libraries/fluffee_paint
+libraries/ge_api
 libraries/dax_api
 libraries/bApi/build
 libraries/bApi/build.gradle.kts

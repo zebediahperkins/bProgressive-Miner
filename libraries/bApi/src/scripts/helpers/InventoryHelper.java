@@ -3,6 +3,7 @@ package scripts.helpers;
 import org.tribot.api.input.Keyboard;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.types.RSItem;
+import scripts.wastedbro.api.rsitem_services.GrandExchange;
 
 import java.util.Arrays;
 
@@ -48,5 +49,13 @@ public class InventoryHelper {
             );
         }
         return count;
+    }
+
+    public static int getInventoryValue() {
+        int price = 0;
+        for (RSItem item : Inventory.getAll()) {
+            price += GrandExchange.getPrice(item.getDefinition().getID());
+        }
+        return price;
     }
 }

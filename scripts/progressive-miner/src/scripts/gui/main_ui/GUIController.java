@@ -125,6 +125,7 @@ public class GUIController implements Initializable, Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        drawPaintBox.fire();
         File pathToProfiles = new File(PATH_TO_BBUU20_FOLDER);
         pathToProfiles.mkdirs();
         profileListView.getItems().addAll(Arrays
