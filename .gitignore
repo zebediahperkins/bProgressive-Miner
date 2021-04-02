@@ -11,10 +11,12 @@ gradlew
 gradlew.bat
 local.properties
 settings.gradle.kts
+libraries/fluffee_paint
 libraries/dax_api
 libraries/bApi/build
 libraries/bApi/build.gradle.kts
 libraries/build
+scripts/3-tick-miner
 scripts/build
 scripts/build.gradle.kts
 scripts/progressive-miner/build

@@ -21,7 +21,7 @@ public class StartNewTask implements Task {
         if (currentTask == null)
             return false;
         if (Inventory.getCount(currentTask.getPickaxe().id) == 0 && !Equipment.isEquipped(currentTask.getPickaxe().id)) {
-            if (!Walking.getInstance().isInBank())
+            if (!Banking.isInBank())
                 Walking.getInstance().walkToBank();
             else if (!Banking.isBankScreenOpen())
                 Banking.openBank();

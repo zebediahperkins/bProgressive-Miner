@@ -122,7 +122,7 @@ public class AntiBan {
         props.setUnderAttack(Combat.isUnderAttack());
         props.setWaitingFixed(false);
         abcUtil.generateTrackers();
-        long reactionTime = abcUtil.generateReactionTime(actualWaitMS) / 8;
+        long reactionTime = abcUtil.generateReactionTime(actualWaitMS) / 20;
         try {
             abcUtil.sleep(reactionTime);
         } catch (InterruptedException e) {
@@ -144,6 +144,27 @@ public class AntiBan {
         isMenuOpen = false;
         isHovering = false;
         return hoverOption;
+    }
+
+    /**
+     * Get the hash of a string
+     *
+     * @param string The string to be hashed
+     * @param modulo The number we will mod by
+     * @param offset The amount to offset by
+     * @return Integer representing the hash of this string
+     */
+    public int hashString(String string, int modulo, int offset) {
+        int hashValue = 0;
+        int lastValue = 0;
+        for (char c : string.toCharArray()) {
+            if (c > lastValue)
+                hashValue += c * 15;
+            else
+                hashValue += c * 50;
+            lastValue = c;
+        }
+        return offset + (hashValue % modulo);
     }
 
     public static AntiBan getInstance() {

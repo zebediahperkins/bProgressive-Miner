@@ -38,14 +38,17 @@ public class Mine implements Task {
     public boolean carryOutTask() {
         RSTile[] rockLocations = UIData.lastRecordedTask.getRockLocations();
         RSTile closestTile = (RSTile) PositionableHelper.getClosestPositionable(rockLocations);
-        if (Player.getPosition().distanceTo(closestTile) > 15) {
+        if (Player.getPosition().distanceTo(closestTile) > 10 || !closestTile.isOnScreen() || !closestTile.isClickable()) {
             return Walking.getInstance().walkTo(closestTile);
         }
         RSObject[] availableRocks = getAvailableRocks(rockLocations);
         if (availableRocks.length < 1) {
             ProgressiveTask curTask = UIData.lastRecordedTask;
-            if (curTask.getShouldHopOnNoRocks())
-                return WorldHelper.hopWorlds(curTask.getUseMembersWorlds(), curTask.getUsePvpWorlds());
+            if (curTask.getShouldHopOnNoRocks()) {
+                WorldHelper.hopWorlds(curTask.getUseMembersWorlds(), curTask.getUsePvpWorlds());
+                Timing.waitCondition(() -> getAvailableRocks(rockLocations).length > 0, General.random(1500, 3500));
+                return true;
+            }
             long startTime = System.currentTimeMillis();
             while (availableRocks.length < 1) { //TODO: Is there a better solution than this if -> while loop with the same condition?
                 AntiBan.getInstance().performTimedActions();
@@ -73,7 +76,7 @@ public class Mine implements Task {
         switch (AntiBan.getInstance().getAndResetHover()) {
             case HOVER -> Mouse.click(1);
             case OPEN_MENU -> ChooseOption.select("Mine");
-            case NONE -> Clicking.clickObjectUntilSuccessful(target);
+            case NONE -> Clicking.clickObjectUntilSuccessful(target, true);
         }
         long startTime = System.currentTimeMillis();
         while (getRockAtTile(target.getPosition()) != null) {
