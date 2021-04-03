@@ -3,10 +3,12 @@ package scripts.interacting;
 import org.tribot.api.DynamicClicking;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
+import org.tribot.api.input.Mouse;
 import org.tribot.api2007.Camera;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSObject;
+import scripts.helpers.ProjectionHelper;
 
 public class Clicking {
     public static boolean clickObject(RSObject object, boolean handleNotOnScreen) {
@@ -18,7 +20,7 @@ public class Clicking {
         }
         DynamicClicking.clickRSObject(object, 1);
         boolean success = Timing.waitCondition(() -> Game.getCrosshairState() == 2, General.random(250, 900));
-        if (success)
+        if (success && ProjectionHelper.screenToTile(Mouse.getPos()).equals(object.getPosition()))
             return true;
         else {
             Player.getRSPlayer().hover();

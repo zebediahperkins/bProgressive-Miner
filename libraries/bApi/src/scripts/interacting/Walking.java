@@ -21,6 +21,7 @@ public class Walking {
         }
         else
             success = DaxWalker.walkTo(positionable);
+        Timing.waitCondition(Player::isMoving, 2000);
         Timing.waitCondition(() -> !Player.isMoving(), 10000);
         if (!Player.getPosition().equals(positionable)) {
             success = Walking.getInstance().blindWalkTo(positionable);

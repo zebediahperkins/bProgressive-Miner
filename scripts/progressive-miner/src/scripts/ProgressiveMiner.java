@@ -66,11 +66,13 @@ public class ProgressiveMiner extends Script implements TaskHandler, Painting, E
             startXp = Skills.SKILLS.MINING.getXP();
             startTime = System.currentTimeMillis();
             while (handleTasks(taskList)) {
-                int tempVal = InventoryHelper.getInventoryValue();
-                if (tempVal > inventoryValue) {
-                    gpMade += tempVal - inventoryValue;
+                if (InventoryHelper.getInventoryValue() > 0) {
+                    int tempVal = InventoryHelper.getInventoryValue();
+                    if (tempVal > inventoryValue) {
+                        gpMade += tempVal - inventoryValue;
+                    }
+                    inventoryValue = tempVal;
                 }
-                inventoryValue = tempVal;
             }
         }
     }

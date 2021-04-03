@@ -58,4 +58,11 @@ public class InventoryHelper {
         }
         return price;
     }
+
+    public static RSItem findFirst(String name) {
+        RSItem[] items = Inventory.find(name);
+        if (items.length > 0)
+            return items[0];
+        return null;
+    }
 }
